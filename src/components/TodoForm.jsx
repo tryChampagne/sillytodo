@@ -1,13 +1,37 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { MAX_INPUT_LENGTH } from "../Constant";
 import styles from "./TodoForm.module.css";
 
 export default function TodoForm({ setTodoList }) {
+  // Hooks
   const [triggerAnime, setTriggerAnime] = useState(0);
   const [userInput, setUserInput] = useState("");
-  const isTooLongText = userInput.length > MAX_INPUT_LENGTH;
+
+  const seg = useMemo(() => {
+    return new Intl.Segmenter(undefined,{
+      granularity: 'grapheme'
+    })
+  },[])
+
+
+  
+  // Helpers
+  const charCountInInput = (str,seg) => {
+    return [...seg.segment(str)].length;
+  }
+
+  // Derived
+  const userInputLength = charCountInInput(userInput,seg);
+  const isTooLongText = userInputLength > MAX_INPUT_LENGTH;
 
   // Event handlers
+  const addTask = (trimmed) => {
+    setTodoList((prev) => {
+      const niceText = trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+      return [...prev, niceText];
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmed = userInput.trim();
@@ -21,13 +45,6 @@ export default function TodoForm({ setTodoList }) {
     setUserInput("");
   };
 
-  // Features
-  const addTask = (trimmed) => {
-    setTodoList((prev) => {
-      const niceText = trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
-      return [...prev, niceText];
-    });
-  };
   return (
     <div className={styles.form_container}>
       {/* Animated warning , when user submit only spaces */}
