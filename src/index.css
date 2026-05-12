@@ -8,3 +8,11 @@ body {
 input[type="submit"] {
   cursor: pointer;
 }
+
+form {
+  font-size: 20px;
+}
+
+input{
+  border-radius: 2px;
+}

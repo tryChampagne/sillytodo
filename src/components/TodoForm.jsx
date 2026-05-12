@@ -58,13 +58,14 @@ export default function TodoForm({ setTodoList }) {
         className={` ${styles.form} ${isTooLongText ? styles.warn_animation : ""}`}
         onSubmit={handleSubmit}
       >
+
         <input
           type="text"
           value={userInput}
           onChange={(e) => {
             setUserInput(e.target.value);
           }}
-          placeholder="Enter your task..."
+          placeholder="enter your task..."
           required
           autoFocus
           className={styles.user_input}
@@ -72,8 +73,9 @@ export default function TodoForm({ setTodoList }) {
 
         <input
           type="submit"
+          title="Click to add"
           value={"+"}
-          className={styles.btn_submit}
+          className={userInputLength ? styles.btn_submit_styled : styles.btn_submit}
           disabled={isTooLongText}
         />
       </form>
