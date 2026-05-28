@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { MAX_INPUT_LENGTH } from "../Constant";
 import styles from "./TodoForm.module.css";
 
-export default function TodoForm({ setTodoList }) {
+export default function TodoForm({ todoList, setTodoList }) {
   // Hooks
   const [userInput, setUserInput] = useState("");
   const [emptyField, setEmptyField] = useState(false);
@@ -41,7 +41,12 @@ export default function TodoForm({ setTodoList }) {
         setEmptyField(false);
       },3000);
     } else {
-      addTask(trimmed);
+      if(todoList.length < 10){
+        addTask(trimmed);
+      }
+      else{
+        alert(`Atmax 10 tasks allowed!`);
+      }
     }
     setUserInput("");
   };

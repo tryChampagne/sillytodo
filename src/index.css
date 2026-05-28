@@ -1,6 +1,7 @@
 body {
 	margin: 0;
 }
+
 * {
   box-sizing: border-box;
 }
@@ -11,4 +12,8 @@ input[type="submit"] {
 
 html{
   font-size: 16px;
+}
+
+button{
+  cursor: pointer;
 }

@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import styles from "./HomePage.module.css";
 import TodoForm from "../components/TodoForm";
+import Modal from "../components/Modal";
 
 export default function HomePage() {
-  // States
+  // UI state
+  const [isModalOpen, setModalVisibility] = useState(false);
+
+  // Data state
   const [todoList, setTodoList] = useState(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("todo")) ?? [];
@@ -14,12 +18,8 @@ export default function HomePage() {
     }
   });
 
-  // useEffects
-  useEffect(() => {
-    localStorage.setItem("todo", JSON.stringify(todoList));
-  }, [todoList]);
+  const ifListNotEmpty = todoList.length !== 0;
 
-  // Event handlers
   const deleteItem = (index) => {
     setTodoList((prev) => {
       const new_arr = [...prev];
@@ -28,14 +28,23 @@ export default function HomePage() {
     });
   };
 
+  const clearList = () => {
+    setTodoList([]);
+    setModalVisibility(false);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("todo", JSON.stringify(todoList));
+  }, [todoList]);
+
   return (
     <div className={styles.home_page_wrapper}>
       {/* Header */}
       <div className={styles.header_container}>
-        <h1 className={styles.header}> TodoList</h1>
+        <div className={styles.header}> TodoList</div>
       </div>
 
-      <TodoForm setTodoList={setTodoList} />
+      <TodoForm todoList={todoList} setTodoList={setTodoList} />
 
       {/* Body */}
 
@@ -79,6 +88,49 @@ export default function HomePage() {
           ))}
         </ol>
       </div>
+
+      {/* Delete all items */}
+      {ifListNotEmpty && (
+        <div className={styles.btn_clear_list_container}>
+          <button
+            onClick={() => setModalVisibility(true)}
+            className={styles.btn_clear_list}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              className="bi bi-trash3"
+              viewBox="0 0 16 16"
+            >
+              <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+            </svg>
+          </button>
+
+          <Modal isOpen={isModalOpen} onClose={() => setModalVisibility(false)}>
+            <h3 className={styles.modal_title}>
+              Confirmation!
+            </h3>
+            <hr />
+            <div className={styles.modal_clear_list_content}>
+              <p>
+                Are you sure you want to clear list?
+              </p>
+              <div className={styles.modal_clear_list_btn_container}>
+                <button
+                  onClick={() => {
+                    setModalVisibility(false);
+                  }}
+                >
+                  no
+                </button>
+                <button onClick={clearList}>yes</button>
+              </div>
+            </div>
+          </Modal>
+        </div>
+      )}
     </div>
   );
 }
