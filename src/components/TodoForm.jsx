@@ -60,11 +60,7 @@ export default function TodoForm({ todoList, setTodoList }) {
       >
         <div className={styles.form_layer1}>
           <span className={styles.input_wrapper}>
-            <label className={styles.label_task} htmlFor="task">
-              enter your task
-            </label>
             <input
-              id="task"
               type="text"
               value={userInput}
               onChange={(e) => {
@@ -73,19 +69,23 @@ export default function TodoForm({ todoList, setTodoList }) {
               onFocus={() => setEmptyField(false)}
               required
               autoFocus
+              id="input_task"
               className={styles.user_input}
             />
+            <label className={styles.label_task} htmlFor="input_task">
+              Enter your task
+            </label>
           </span>
 
           <input
             type="submit"
-            title="Click to add"
             value={"+"}
+            title="Click to add"
+            disabled={isTooLongText}
             aria-label="add task"
             className={
               userInputLength ? styles.btn_submit_styled : styles.btn_submit
             }
-            disabled={isTooLongText}
           />
         </div>
 

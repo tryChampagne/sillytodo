@@ -39,28 +39,34 @@
   caret-color: rgb(155, 145, 226);
   color: rgb(59, 58, 58);
   border: 1px solid rgb(151, 165, 230);
-
+}
+.user_input:focus{
+  border: none;
+  outline: 1px solid rgb(112, 91, 233);
+}
+.user_input:focus + label{
+  top: 0;
+  font-size: 0.6rem;
+  padding: 0 4px 0 4px;
+  transform: translate(20px,-50%);
+  transition: all 0.3s ease;
 }
 .input_wrapper{
   position: relative;
 }
 .label_task{
   position: absolute;
-  left: 20px;
+  top: 50%;
+  left: 6px;
   
   transform: translateY(-50%);
-  z-index: 2;
   
-  padding: 0 4px 0 4px;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   
   color: rgb(121, 121, 207);
   background-color: white;
 }
-.user_input:focus{
-  border: none;
-  outline: 1px solid rgb(112, 91, 233);
-}
+
 .icon_warn{
   display: flex;
   align-items: center;
@@ -139,5 +145,8 @@
   .empty_field_warning_text{
     font-size: 0.8rem;
       color: rgb(240, 84, 84);
+  }
+  .user_input:focus + label{
+    font-size: 0.8rem;
   }
 }
